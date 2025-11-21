@@ -6,7 +6,8 @@
     'version': '17.0.2.0.2',
     'category': 'Point of Sale',
     'summary': 'Optical POS integration: optical tests, insurance payments, and analytics.',
-    'author': 'Risolto Limited',
+    'author': 'Blackpaw Innovations',
+    'maintainer': 'Adrian',
     'depends': [
         'point_of_sale',
         'account',
