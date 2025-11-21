@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="bp_optical_pos.InsurancePaymentSelectionPopup">
+        <div class="popup insurance-payment-selection-popup" style="max-width: 600px; min-height: 400px;">
+            <!-- Header -->
+            <header style="background: #fff; border-bottom: 1px solid #dfe1e6; padding: 24px 32px;">
+                <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #1a1a1a;">Select Insurance</h2>
+                <p style="margin: 8px 0 0 0; font-size: 13px; color: #5e6c84;">Choose an existing insurance policy or create a new one</p>
+            </header>
+
+            <!-- Main Content -->
+            <main style="padding: 32px; background: #fafafa; min-height: 300px; max-height: 500px; overflow-y: auto;">
+                <!-- Customer Info -->
+                <div style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 16px; margin-bottom: 24px;">
+                    <div style="font-size: 12px; color: #5e6c84; margin-bottom: 4px;">CUSTOMER</div>
+                    <div style="font-size: 15px; font-weight: 600; color: #1a1a1a;">
+                        <t t-esc="props.customerName"/>
+                    </div>
+                </div>
+
+                <!-- Insurance List -->
+                <div t-if="state.insurances &amp;&amp; state.insurances.length > 0" style="margin-bottom: 24px;">
+                    <div style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Existing Insurance Policies
+                    </div>
+                    
+                    <t t-foreach="state.insurances" t-as="insurance" t-key="insurance.id">
+                        <div 
+                            t-on-click="() => this.selectInsurance(insurance)"
+                            t-att-class="state.selectedInsurance?.id === insurance.id ? 'insurance-item-selected' : 'insurance-item'"
+                            style="background: #fff; border: 2px solid; border-color: var(--border-color, #dfe1e6); border-radius: 4px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s;">
+                            
+                            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                <!-- Radio Button -->
+                                <div style="width: 20px; height: 20px; border-radius: 50%; border: 2px solid; border-color: var(--radio-color, #dfe1e6); display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0;">
+                                    <div t-if="state.selectedInsurance?.id === insurance.id" 
+                                         style="width: 10px; height: 10px; border-radius: 50%; background: #0052cc;"/>
+                                </div>
+                                
+                                <!-- Insurance Company Name -->
+                                <div style="flex: 1;">
+                                    <div style="font-size: 15px; font-weight: 600; color: #1a1a1a;">
+                                        <t t-esc="insurance.insurance_company_name"/>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Insurance Details Grid -->
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-left: 32px;">
+                                <div>
+                                    <div style="font-size: 11px; color: #5e6c84; margin-bottom: 2px;">POLICY NUMBER</div>
+                                    <div style="font-size: 13px; color: #1a1a1a;"><t t-esc="insurance.name"/></div>
+                                </div>
+                                <div>
+                                    <div style="font-size: 11px; color: #5e6c84; margin-bottom: 2px;">EXPIRY DATE</div>
+                                    <div style="font-size: 13px; color: #1a1a1a;">
+                                        <t t-if="insurance.expiry_date">
+                                            <t t-esc="insurance.expiry_date"/>
+                                        </t>
+                                        <t t-else="">N/A</t>
+                                    </div>
+                                </div>
+                                <div t-if="insurance.patient_company_id">
+                                    <div style="font-size: 11px; color: #5e6c84; margin-bottom: 2px;">COMPANY</div>
+                                    <div style="font-size: 13px; color: #1a1a1a;"><t t-esc="insurance.patient_company_id"/></div>
+                                </div>
+                                <div t-if="insurance.invoice_number">
+                                    <div style="font-size: 11px; color: #5e6c84; margin-bottom: 2px;">INVOICE NUMBER</div>
+                                    <div style="font-size: 13px; color: #1a1a1a;"><t t-esc="insurance.invoice_number"/></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Active Badge -->
+                            <div t-if="insurance.active" style="margin-left: 32px; margin-top: 8px;">
+                                <span style="display: inline-block; padding: 2px 8px; background: #e3fcef; color: #006644; font-size: 11px; font-weight: 600; border-radius: 3px; text-transform: uppercase;">Active</span>
+                            </div>
+                        </div>
+                        
+                        <style>
+                            .insurance-item {
+                                --border-color: #dfe1e6;
+                                --radio-color: #dfe1e6;
+                            }
+                            .insurance-item:hover {
+                                --border-color: #0052cc;
+                                --radio-color: #0052cc;
+                                box-shadow: 0 2px 8px rgba(0, 82, 204, 0.15);
+                            }
+                            .insurance-item-selected {
+                                --border-color: #0052cc;
+                                --radio-color: #0052cc;
+                                background: #f4f8ff !important;
+                            }
+                        </style>
+                    </t>
+                </div>
+
+                <!-- No Insurance Message -->
+                <div t-if="!state.insurances || state.insurances.length === 0" style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 32px; text-align: center; margin-bottom: 24px;">
+                    <div style="font-size: 48px; margin-bottom: 16px; opacity: 0.3;">📋</div>
+                    <div style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 8px;">No Insurance Policies Found</div>
+                    <div style="font-size: 13px; color: #5e6c84;">Create a new insurance policy for this customer</div>
+                </div>
+
+                <!-- Create New Button -->
+                <button 
+                    t-on-click="createNewInsurance"
+                    style="width: 100%; background: #fff; border: 2px dashed #0052cc; color: #0052cc; padding: 16px; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <span style="font-size: 20px;">+</span>
+                    <span>Create New Insurance Policy</span>
+                </button>
+            </main>
+
+            <!-- Footer -->
+            <footer style="background: #fafafa; border-top: 1px solid #dfe1e6; padding: 16px 32px; display: flex; justify-content: flex-end; gap: 12px;">
+                <button 
+                    t-on-click="cancel"
+                    style="padding: 10px 24px; background: #fff; border: 1px solid #dfe1e6; color: #42526e; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+                    Cancel
+                </button>
+                <button 
+                    t-on-click="confirm"
+                    t-att-disabled="!state.selectedInsurance"
+                    t-att-style="state.selectedInsurance ? 'padding: 10px 24px; background: #0052cc; border: none; color: #fff; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;' : 'padding: 10px 24px; background: #f4f5f7; border: none; color: #a5adba; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: not-allowed;'">
+                    Use Selected Insurance
+                </button>
+            </footer>
+        </div>
+    </t>
+</templates>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend Stock Location Form to Add Analytic Account Field -->
+        <record id="view_location_form_inherit_optical_pos" model="ir.ui.view">
+            <field name="name">stock.location.form.optical.pos</field>
+            <field name="model">stock.location</field>
+            <field name="inherit_id" ref="stock.view_location_form"/>
+            <field name="arch" type="xml">
+                <!-- Add analytic account field in the Additional Information group -->
+                <xpath expr="//group[@name='additional_info']" position="inside">
+                    <field name="analytic_account_id" 
+                           domain="[('company_id', '=', company_id)]"
+                           context="{'default_plan_id': %(analytic.analytic_plan_projects)d}"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

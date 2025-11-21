@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Add Insurance Fields to Invoice Form -->
+    <record id="view_move_form_insurance_beneficiary" model="ir.ui.view">
+        <field name="name">account.move.form.insurance.beneficiary</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <!-- Add after partner_id field -->
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="is_insurance_invoice" invisible="1"/>
+                <field name="patient_has_insurance" invisible="1"/>
+                <field name="paying_with_insurance" invisible="1"/>
+                <field name="associated_patient" 
+                       string="Associated Patient"
+                       readonly="1"
+                       invisible="not is_insurance_invoice"
+                       help="The patient/customer covered by this insurance invoice"/>
+            </xpath>
+            
+            <!-- Add Paying with Insurance toggle above Journal -->
+            <!-- Add Optical Info to Other Info Tab -->
+            <xpath expr="//page[@name='other_info']" position="inside">
+                <group string="Optical Information" name="optical_info">
+                    <group>
+                        <field name="branch_id" 
+                               readonly="1"
+                               options="{'no_open': True, 'no_create': True}"/>
+                        <field name="paying_with_insurance" 
+                               widget="boolean_toggle"
+                               invisible="not patient_has_insurance"/>
+                    </group>
+                </group>
+            </xpath>
+
+            <!-- Add Insurance Details Tab -->
+            <xpath expr="//page[@name='other_info']" position="before">
+                <page string="Insurance Details" name="insurance_details" invisible="not paying_with_insurance">
+                    <field name="insurance_payment_ids" readonly="1">
+                        <tree>
+                            <field name="insurance_company_id"/>
+                            <field name="policy_number"/>
+                            <field name="member_number"/>
+                            <field name="employer"/>
+                            <field name="amount"/>
+                            <field name="notes"/>
+                        </tree>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Insurance Fields to Invoice Tree -->
+    <record id="view_invoice_tree_insurance_beneficiary" model="ir.ui.view">
+        <field name="name">account.move.tree.insurance.beneficiary</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_invoice_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_partner_display_name']" position="after">
+                <field name="associated_patient_name" 
+                       string="Patient"
+                       optional="show"
+                       invisible="context.get('default_move_type') not in ('out_invoice', 'out_refund')"/>
+                <field name="branch_id" optional="hide"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Add Smart Filter to Search View -->
+    <record id="view_account_invoice_filter_insurance" model="ir.ui.view">
+        <field name="name">account.invoice.select.insurance</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_account_invoice_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='late']" position="before">
+                <filter string="Insurance Claims" 
+                        name="insurance_claims" 
+                        domain="[('is_insurance_invoice', '=', True)]"/>
+                <separator/>
+            </xpath>
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="associated_patient" string="Patient"/>
+                <field name="branch_id"/>
+                <field name="insurance_company_id"/>
+            </xpath>
+            
+            <xpath expr="//group" position="inside">
+                <filter string="Branch" name="group_by_branch" context="{'group_by': 'branch_id'}"/>
+                <filter string="Insurance Company" name="group_by_insurance_company" context="{'group_by': 'insurance_company_id'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Pending Insurance Search View with Search Panel -->
+    <record id="view_pending_insurance_search" model="ir.ui.view">
+        <field name="name">account.move.search.pending.insurance</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="view_account_invoice_filter_insurance"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//search" position="inside">
+                <searchpanel>
+                    <field name="branch_id" icon="fa-code-fork" enable_counters="1" select="multi"/>
+                    <field name="insurance_company_id" icon="fa-building" enable_counters="1" select="multi"/>
+                </searchpanel>
+            </xpath>
+            <xpath expr="//filter[@name='group_by_insurance_company']" position="after">
+                <filter string="Invoice Date" name="group_by_invoice_date" context="{'group_by': 'invoice_date'}"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Pending Insurance Action -->
+    <record id="action_pending_insurance_invoices" model="ir.actions.act_window">
+        <field name="name">Pending Insurance</field>
+        <field name="res_model">account.move</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_pending_insurance_search"/>
+        <field name="domain">[
+            ('move_type', '=', 'out_invoice'),
+            ('state', '=', 'posted'),
+            ('payment_state', 'in', ('not_paid', 'partial')),
+            ('is_insurance_invoice', '=', True)
+        ]</field>
+        <field name="context">{'create': False}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No pending insurance invoices found
+            </p>
+            <p>
+                Invoices created with insurance payments that are not yet fully paid will appear here.
+            </p>
+        </field>
+    </record>
+
+    <!-- Pending Insurance Menu -->
+    <menuitem id="menu_pending_insurance"
+              name="Pending Insurance"
+              parent="account.menu_finance_receivables"
+              action="action_pending_insurance_invoices"
+              sequence="15"/>
+</odoo>

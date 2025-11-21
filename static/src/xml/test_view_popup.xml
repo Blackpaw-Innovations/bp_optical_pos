@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-name="bp_optical_pos.TestViewPopup" owl="1">
+        <div class="popup popup-test-view" style="max-width: 1000px; width: 90vw;">
+            <header class="title drag-handle" style="padding: 20px 32px; border-bottom: 1px solid #e0e0e0; background: #fff;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0; font-size: 22px; font-weight: 600; color: #1a1a1a;">
+                            <i class="fa fa-file-text-o" style="margin-right: 10px;"></i>
+                            Optical Test Details
+                        </h3>
+                    </div>
+                    <button 
+                        t-on-click="printTest"
+                        class="btn btn-primary"
+                        style="padding: 8px 20px; background: #0052cc; border: none; color: #fff; border-radius: 3px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <i class="fa fa-print"></i>
+                        <span>Print</span>
+                    </button>
+                </div>
+                <p style="margin: 0 0 16px 0; font-size: 13px; font-weight: 400; color: #5e6c84;">
+                    <span t-esc="test.name"/>
+                </p>
+                
+                <!-- Status Bar -->
+                <div class="stage-status-bar" style="display: flex; gap: 8px; margin-top: 16px; padding-top: 16px; border-top: 1px solid #f4f5f7;">
+                    <t t-foreach="stages" t-as="stage" t-key="stage.id">
+                        <button class="btn"
+                                t-att-class="state.selectedStageId === stage.id ? 'btn-primary' : 'btn-outline-secondary'"
+                                t-on-click="() => this.selectStage(stage.id)"
+                                style="flex: 1; padding: 8px 16px; font-size: 12px; font-weight: 600; border-radius: 3px; transition: all 0.2s; border: 1px solid #dfe1e6; text-transform: uppercase; letter-spacing: 0.5px;">
+                            <i class="fa fa-circle" t-att-class="state.selectedStageId === stage.id ? '' : '-o'" style="margin-right: 6px; font-size: 7px;"></i>
+                            <span t-esc="stage.name"/>
+                        </button>
+                    </t>
+                </div>
+            </header>
+            
+            <main class="body" style="padding: 32px; max-height: 70vh; overflow-y: auto; background: #fafafa;">
+                
+                <!-- Patient & Test Info Section -->
+                <div class="info-section" style="background: #fff; padding: 24px; border-radius: 4px; margin-bottom: 28px; border: 1px solid #dfe1e6;">
+                    <h4 style="margin: 0 0 20px 0; font-size: 16px; font-weight: 600; color: #1a1a1a;">
+                        <i class="fa fa-info-circle" style="margin-right: 8px; color: #0052cc;"></i>
+                        Test Information
+                    </h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label style="font-size: 13px; color: #5e6c84; font-weight: 600; display: block; margin-bottom: 8px;">Patient</label>
+                            <div style="padding: 12px 16px; background: #f4f5f7; border: 1px solid #dfe1e6; border-radius: 3px; font-size: 14px; color: #1a1a1a;">
+                                <i class="fa fa-user" style="margin-right: 8px; color: #5e6c84;"></i>
+                                <span t-esc="test.patient_name"/>
+                            </div>
+                        </div>
+                        <div>
+                            <label style="font-size: 13px; color: #5e6c84; font-weight: 600; display: block; margin-bottom: 8px;">Test Date</label>
+                            <div style="padding: 12px 16px; background: #f4f5f7; border: 1px solid #dfe1e6; border-radius: 3px; font-size: 14px; color: #1a1a1a;">
+                                <i class="fa fa-calendar" style="margin-right: 8px; color: #5e6c84;"></i>
+                                <span t-esc="test.test_date"/>
+                            </div>
+                        </div>
+                        <div t-if="test.optometrist_name">
+                            <label style="font-size: 13px; color: #5e6c84; font-weight: 600; display: block; margin-bottom: 8px;">Optometrist</label>
+                            <div style="padding: 12px 16px; background: #f4f5f7; border: 1px solid #dfe1e6; border-radius: 3px; font-size: 14px; color: #1a1a1a;">
+                                <i class="fa fa-user-md" style="margin-right: 8px; color: #5e6c84;"></i>
+                                <span t-esc="test.optometrist_name"/>
+                            </div>
+                        </div>
+                        <div t-if="test.validity_until">
+                            <label style="font-size: 13px; color: #5e6c84; font-weight: 600; display: block; margin-bottom: 8px;">Valid Until</label>
+                            <div style="padding: 12px 16px; background: #f4f5f7; border: 1px solid #dfe1e6; border-radius: 3px; font-size: 14px; color: #1a1a1a;">
+                                <i class="fa fa-clock-o" style="margin-right: 8px; color: #5e6c84;"></i>
+                                <span t-esc="test.validity_until"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prescription Values Section -->
+                <div class="prescription-section" style="background: #fff; padding: 24px; border-radius: 4px; border: 1px solid #dfe1e6;">
+                    <h4 style="margin: 0 0 20px 0; font-size: 16px; font-weight: 600; color: #1a1a1a;">
+                        <i class="fa fa-eye" style="margin-right: 8px; color: #6554c0;"></i>
+                        Prescription Values
+                    </h4>
+                    
+                    <div class="table-responsive">
+                        <table class="table" style="margin-bottom: 0; border-collapse: collapse; width: 100%;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #dfe1e6;">
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">EYE</th>
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">SPHERE</th>
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">CYLINDER</th>
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">AXIS</th>
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">ADD</th>
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">VA</th>
+                                    <th style="font-size: 11px; font-weight: 700; padding: 12px 8px; color: #5e6c84; text-transform: uppercase; text-align: left;">PD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f4f5f7;">
+                                    <td style="padding: 12px 8px; font-weight: 600; font-size: 13px; color: #1a1a1a;">Right (OD)</td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.sphere_od || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.cylinder_od || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.axis_od || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.add_od || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.va_od || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.pd_od || '-'"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 12px 8px; font-weight: 600; font-size: 13px; color: #1a1a1a;">Left (OS)</td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.sphere_os || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.cylinder_os || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.axis_os || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.add_os || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.va_os || '-'"/></td>
+                                    <td style="padding: 12px 8px; font-size: 14px; color: #42526e;"><span t-esc="test.pd_os || '-'"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Additional Info -->
+                <div class="additional-info" style="margin-top: 28px;" t-if="test.notes">
+                    <label style="font-size: 13px; color: #5e6c84; font-weight: 600; display: block; margin-bottom: 8px;">
+                        <i class="fa fa-sticky-note-o" style="margin-right: 6px;"></i>
+                        Clinical Notes
+                    </label>
+                    <div style="background: #fff; padding: 16px; border-radius: 3px; border: 1px solid #dfe1e6; font-size: 13px; color: #42526e; line-height: 1.6;">
+                        <span t-esc="test.notes"/>
+                    </div>
+                </div>
+
+            </main>
+            
+            <footer class="footer" style="padding: 16px 32px; border-top: 1px solid #e0e0e0; background-color: #fafafa;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div t-if="state.selectedStageId !== test.stage_id" style="color: #ff991f; font-size: 13px; font-weight: 500;">
+                        <i class="fa fa-exclamation-triangle" style="margin-right: 6px;"></i>
+                        Stage will be updated
+                    </div>
+                    <div t-else=""></div>
+                    <div style="display: flex; gap: 12px;">
+                        <button class="btn btn-light" 
+                                t-on-click="cancel"
+                                t-att-disabled="state.loading"
+                                style="padding: 10px 20px; font-size: 14px; font-weight: 500; border: 1px solid #dfe1e6; border-radius: 3px; background: #fff; color: #42526e;">
+                            Close
+                        </button>
+                        <button class="btn btn-primary" 
+                                t-on-click="saveStage"
+                                t-att-disabled="state.loading || state.selectedStageId === test.stage_id"
+                                style="padding: 10px 20px; font-size: 14px; font-weight: 500; border: none; border-radius: 3px; background: #0052cc; color: #fff;">
+                            <i class="fa" t-att-class="state.loading ? 'fa-spinner fa-spin' : 'fa-save'" style="margin-right: 6px;"></i>
+                            <span t-if="!state.loading">Save Stage</span>
+                            <span t-else="">Saving...</span>
+                        </button>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </t>
+    
+</templates>

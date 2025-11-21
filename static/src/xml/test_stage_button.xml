@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-name="bp_optical_pos.TestStageButton" owl="1">
+        <button class="control-button btn btn-light rounded-0 fw-bolder" 
+                t-on-click="onClick" 
+                t-if="isVisible">
+            <i class="fa fa-file-text-o me-1"/>
+            <span> </span>
+            <span>View Prescription</span>
+        </button>
+    </t>
+    
+    <t t-name="bp_optical_pos.TestSelectionPopup" owl="1">
+        <div class="popup popup-test-selection">
+            <header class="title drag-handle" style="padding: 20px 24px; border-bottom: 1px solid #e0e0e0;">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 600; color: #212529;">
+                    <i class="fa fa-list" style="margin-right: 8px; color: #0d6efd;"></i>
+                    Select Test
+                </h3>
+                <p style="margin: 4px 0 0 0; font-size: 14px; font-weight: 400; color: #6c757d;">
+                    Choose which test to move to a different stage
+                </p>
+            </header>
+            
+            <main class="body" style="padding: 24px; min-width: 500px; max-height: 400px; overflow-y: auto;">
+                <div class="test-list">
+                    <t t-foreach="props.tests" t-as="test" t-key="test.id">
+                        <div class="test-item" 
+                             t-on-click="() => this.selectTest(test.id)"
+                             t-att-class="state.selectedTestId === test.id ? 'selected' : ''"
+                             style="padding: 16px; margin-bottom: 12px; border: 2px solid #dee2e6; border-radius: 8px; cursor: pointer; transition: all 0.2s;">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <div style="font-size: 16px; font-weight: 600; color: #212529; margin-bottom: 8px;">
+                                        <i class="fa fa-file-text-o" style="margin-right: 8px; color: #0d6efd;"></i>
+                                        <span t-esc="test.name"/>
+                                    </div>
+                                    <div style="font-size: 13px; color: #6c757d; margin-bottom: 4px;">
+                                        <i class="fa fa-calendar" style="margin-right: 6px;"></i>
+                                        <span t-esc="test.test_date"/>
+                                    </div>
+                                    <t t-if="test.stage_name">
+                                        <div style="margin-top: 8px;">
+                                            <span class="badge bg-info" style="padding: 6px 10px; font-size: 12px; font-weight: 500;">
+                                                <i class="fa fa-map-marker" style="margin-right: 4px;"></i>
+                                                <span t-esc="test.stage_name"/>
+                                            </span>
+                                        </div>
+                                    </t>
+                                </div>
+                                <div>
+                                    <t t-if="state.selectedTestId === test.id">
+                                        <i class="fa fa-check-circle" style="font-size: 24px; color: #28a745;"></i>
+                                    </t>
+                                    <t t-else="">
+                                        <i class="fa fa-circle-o" style="font-size: 24px; color: #dee2e6;"></i>
+                                    </t>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </div>
+            </main>
+            
+            <footer class="footer" style="padding: 16px 24px; border-top: 1px solid #e0e0e0; background-color: #f8f9fa;">
+                <div class="d-flex justify-content-end gap-3">
+                    <button class="btn btn-secondary" 
+                            t-on-click="cancel"
+                            style="padding: 10px 24px; font-size: 14px; font-weight: 500; min-width: 100px;">
+                        <i class="fa fa-times" style="margin-right: 8px;"></i>
+                        Cancel
+                    </button>
+                    <button class="btn btn-primary" 
+                            t-on-click="confirm"
+                            style="padding: 10px 24px; font-size: 14px; font-weight: 500; min-width: 120px;">
+                        <i class="fa fa-arrow-right" style="margin-right: 8px;"></i>
+                        Continue
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </t>
+    
+    <t t-name="bp_optical_pos.TestStageStyles" owl="1">
+        <style>
+            .test-item:hover {
+                border-color: #0d6efd !important;
+                background-color: #f8f9fa;
+            }
+
+            .test-item.selected {
+                border-color: #28a745 !important;
+                background-color: #d4edda;
+            }
+        </style>
+    </t>
+    
+</templates>

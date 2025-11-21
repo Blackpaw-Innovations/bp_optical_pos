@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="bp_optical_pos.InsuranceFormPopup">
+        <div class="popup insurance-form-popup" style="max-width: 700px;">
+            <!-- Header -->
+            <header style="background: #fff; border-bottom: 1px solid #dfe1e6; padding: 24px 32px;">
+                <h2 style="margin: 0; font-size: 20px; font-weight: 600; color: #1a1a1a;">
+                    <t t-esc="props.title || 'Insurance Policy'"/>
+                </h2>
+                <p style="margin: 8px 0 0 0; font-size: 13px; color: #5e6c84;">
+                    Customer: <span style="font-weight: 600;"><t t-esc="props.customerName"/></span>
+                </p>
+            </header>
+
+            <!-- Main Content -->
+            <main style="padding: 32px; background: #fafafa; max-height: 600px; overflow-y: auto;">
+                <!-- Required Fields Section -->
+                <div style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 24px; margin-bottom: 24px;">
+                    <div style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Required Information
+                    </div>
+                    
+                    <!-- Policy Number -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            POLICY NUMBER <span style="color: #de350b;">*</span>
+                        </label>
+                        <input 
+                            type="text"
+                            t-model="state.policy_number"
+                            placeholder="Enter policy number"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;"/>
+                    </div>
+
+                    <!-- Insurance Company -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            INSURANCE COMPANY <span style="color: #de350b;">*</span>
+                        </label>
+                        <select 
+                            t-model="state.insurance_company_id"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;">
+                            <option value="">Select insurance company</option>
+                            <t t-foreach="props.insuranceCompanies" t-as="company" t-key="company.id">
+                                <option t-att-value="company.id"><t t-esc="company.name"/></option>
+                            </t>
+                        </select>
+                    </div>
+
+                    <!-- Date -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            DATE <span style="color: #de350b;">*</span>
+                        </label>
+                        <input 
+                            type="date"
+                            t-model="state.date"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;"/>
+                    </div>
+                </div>
+
+                <!-- Optional Fields Section -->
+                <div style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 24px; margin-bottom: 24px;">
+                    <div style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Additional Information
+                    </div>
+
+                    <!-- Expiry Date -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            EXPIRY DATE
+                        </label>
+                        <input 
+                            type="date"
+                            t-model="state.expiry_date"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;"/>
+                    </div>
+
+                    <!-- Patient Company -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            PATIENT COMPANY / EMPLOYER
+                        </label>
+                        <input 
+                            type="text"
+                            t-model="state.patient_company_id"
+                            placeholder="Enter company or employer name"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;"/>
+                    </div>
+
+                    <!-- Invoice Number -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            INVOICE NUMBER
+                        </label>
+                        <input 
+                            type="text"
+                            t-model="state.invoice_number"
+                            placeholder="Enter invoice number"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;"/>
+                    </div>
+
+                    <!-- Coverage Details -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            COVERAGE DETAILS
+                        </label>
+                        <textarea 
+                            t-model="state.coverage_details"
+                            placeholder="Enter coverage details (e.g., limits, percentages, exclusions)"
+                            rows="3"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa; resize: vertical; font-family: inherit;"/>
+                    </div>
+
+                    <!-- Document Upload -->
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            UPLOAD DOCUMENT
+                        </label>
+                        <input 
+                            type="file"
+                            t-on-change="onFileChange"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa;"/>
+                    </div>
+
+                    <!-- Note -->
+                    <div>
+                        <label style="display: block; font-size: 12px; font-weight: 600; color: #5e6c84; margin-bottom: 6px;">
+                            NOTES
+                        </label>
+                        <textarea 
+                            t-model="state.note"
+                            placeholder="Additional notes"
+                            rows="3"
+                            style="width: 100%; padding: 10px 12px; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a; background: #fafafa; resize: vertical; font-family: inherit;"/>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Footer -->
+            <footer style="background: #fafafa; border-top: 1px solid #dfe1e6; padding: 16px 32px; display: flex; justify-content: flex-end; gap: 12px;">
+                <button 
+                    t-on-click="cancel"
+                    style="padding: 10px 24px; background: #fff; border: 1px solid #dfe1e6; color: #42526e; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.2s;">
+                    Cancel
+                </button>
+                <button 
+                    t-on-click="confirm"
+                    style="padding: 10px 24px; background: #0052cc; border: none; color: #fff; border-radius: 4px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                    Save Insurance Policy
+                </button>
+            </footer>
+        </div>
+    </t>
+</templates>

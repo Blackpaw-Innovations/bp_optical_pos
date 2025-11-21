@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_optical_branch_pl" model="ir.actions.report">
+        <field name="name">Branch Profit &amp; Loss</field>
+        <field name="model">optical.branch.pl.wizard</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bp_optical_pos.report_optical_branch_pl</field>
+        <field name="report_file">bp_optical_pos.report_optical_branch_pl</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_optical_branch_pl">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <h2>Branch Profit &amp; Loss</h2>
+                            <p>
+                                <strong>Date Range:</strong> <span t-esc="date_from"/> to <span t-esc="date_to"/><br/>
+                                <strong>Branches:</strong> <span t-esc="', '.join(branches.mapped('name'))"/>
+                            </p>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm o_main_table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Account</th>
+                                <th class="text-end">Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Income Section -->
+                            <tr class="table-active">
+                                <td colspan="2"><strong>Income</strong></td>
+                            </tr>
+                            <t t-foreach="income_lines" t-as="line">
+                                <tr>
+                                    <td class="ps-4">
+                                        <span t-esc="line['code']"/> <span t-esc="line['name']"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="line['amount']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr class="fw-bold">
+                                <td class="text-end">Total Income:</td>
+                                <td class="text-end">
+                                    <span t-esc="total_income" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                </td>
+                            </tr>
+
+                            <!-- Expense Section -->
+                            <tr class="table-active mt-4">
+                                <td colspan="2"><strong>Expenses</strong></td>
+                            </tr>
+                            <t t-foreach="expense_lines" t-as="line">
+                                <tr>
+                                    <td class="ps-4">
+                                        <span t-esc="line['code']"/> <span t-esc="line['name']"/>
+                                    </td>
+                                    <td class="text-end">
+                                        <span t-esc="line['amount']" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr class="fw-bold">
+                                <td class="text-end">Total Expenses:</td>
+                                <td class="text-end">
+                                    <span t-esc="total_expense" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/>
+                                </td>
+                            </tr>
+
+                            <!-- Net Profit -->
+                            <tr class="table-dark mt-4">
+                                <td class="text-end"><strong>Net Profit:</strong></td>
+                                <td class="text-end">
+                                    <strong><span t-esc="net_profit" t-options='{"widget": "monetary", "display_currency": company.currency_id}'/></strong>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

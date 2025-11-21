@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <!-- Add Optical History button to Partner Line -->
+    <t t-name="point_of_sale.PartnerLine" t-inherit="point_of_sale.PartnerLine" t-inherit-mode="extension" owl="1">
+        <xpath expr="//button[hasclass('edit-partner-button')]" position="after">
+            <t t-if="isOpticalEnabled">
+                <button class="btn btn-light border ms-2" 
+                        t-on-click.stop="showOpticalHistory"
+                        title="View Optical Test History">
+                    <i class="fa fa-eye me-1"/>
+                    HISTORY
+                </button>
+            </t>
+        </xpath>
+    </t>
+    
+    <!-- Optical History Popup -->
+    <t t-name="bp_optical_pos.OpticalHistoryPopup" owl="1">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <header class="modal-header bg-primary text-white">
+                    <h4 class="modal-title">
+                        <i class="fa fa-eye me-2"/>
+                        Optical Test History - <t t-esc="props.partner.name"/>
+                    </h4>
+                    <button class="btn-close btn-close-white" t-on-click="close" aria-label="Close"/>
+                </header>
+                
+                <main class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                    <t t-if="!hasTests">
+                        <div class="alert alert-info">
+                            <i class="fa fa-info-circle me-2"/>
+                            No optical tests found for this patient.
+                        </div>
+                    </t>
+                    
+                    <t t-if="hasTests and !state.selectedTest">
+                        <div class="list-group">
+                            <t t-foreach="props.tests" t-as="test" t-key="test.id">
+                                <a href="#" class="list-group-item list-group-item-action" 
+                                   t-on-click="() => this.selectTest(test)">
+                                    <div class="d-flex w-100 justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">
+                                                <i class="fa fa-calendar me-1"/>
+                                                <t t-esc="formatDate(test.test_date)"/>
+                                            </h6>
+                                            <small class="text-muted">
+                                                <t t-if="test.optometrist">
+                                                    <i class="fa fa-user-md me-1"/>
+                                                    <t t-esc="test.optometrist"/>
+                                                </t>
+                                                <t t-if="test.branch">
+                                                    <span class="ms-3">
+                                                        <i class="fa fa-building me-1"/>
+                                                        <t t-esc="test.branch"/>
+                                                    </span>
+                                                </t>
+                                            </small>
+                                        </div>
+                                        <div class="text-end">
+                                            <small class="badge bg-secondary">
+                                                <t t-esc="test.name"/>
+                                            </small>
+                                            <br/>
+                                            <small class="text-muted">
+                                                <i class="fa fa-chevron-right"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2">
+                                        <small>
+                                            <strong>OD:</strong> SPH <t t-esc="test.sphere_od"/> 
+                                            CYL <t t-esc="test.cylinder_od"/>
+                                            <span class="ms-3">
+                                                <strong>OS:</strong> SPH <t t-esc="test.sphere_os"/> 
+                                                CYL <t t-esc="test.cylinder_os"/>
+                                            </span>
+                                        </small>
+                                    </div>
+                                </a>
+                            </t>
+                        </div>
+                    </t>
+                    
+                    <t t-if="state.selectedTest">
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">
+                                        <t t-esc="state.selectedTest.name"/>
+                                    </h5>
+                                    <button class="btn btn-sm btn-secondary" t-on-click="closeDetails">
+                                        <i class="fa fa-arrow-left me-1"/> Back
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <strong>Date:</strong> <t t-esc="formatDate(state.selectedTest.test_date)"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Optometrist:</strong> <t t-esc="state.selectedTest.optometrist"/>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h6 class="text-primary">Right Eye (OD)</h6>
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <th>Sphere</th>
+                                                <th>Cylinder</th>
+                                                <th>Axis</th>
+                                                <th>Add</th>
+                                                <th>VA</th>
+                                                <th>PD</th>
+                                            </tr>
+                                            <tr>
+                                                <td><t t-esc="state.selectedTest.sphere_od"/></td>
+                                                <td><t t-esc="state.selectedTest.cylinder_od"/></td>
+                                                <td><t t-esc="state.selectedTest.axis_od"/>°</td>
+                                                <td><t t-esc="state.selectedTest.add_od"/></td>
+                                                <td><t t-esc="state.selectedTest.va_od"/></td>
+                                                <td><t t-esc="state.selectedTest.pd_od"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-12">
+                                        <h6 class="text-success">Left Eye (OS)</h6>
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <th>Sphere</th>
+                                                <th>Cylinder</th>
+                                                <th>Axis</th>
+                                                <th>Add</th>
+                                                <th>VA</th>
+                                                <th>PD</th>
+                                            </tr>
+                                            <tr>
+                                                <td><t t-esc="state.selectedTest.sphere_os"/></td>
+                                                <td><t t-esc="state.selectedTest.cylinder_os"/></td>
+                                                <td><t t-esc="state.selectedTest.axis_os"/>°</td>
+                                                <td><t t-esc="state.selectedTest.add_os"/></td>
+                                                <td><t t-esc="state.selectedTest.va_os"/></td>
+                                                <td><t t-esc="state.selectedTest.pd_os"/></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                                
+                                <t t-if="state.selectedTest.validity_until">
+                                    <div class="alert alert-info">
+                                        <strong>Valid Until:</strong> <t t-esc="formatDate(state.selectedTest.validity_until)"/>
+                                    </div>
+                                </t>
+                                
+                                <t t-if="state.selectedTest.notes">
+                                    <div class="mt-3">
+                                        <strong>Notes:</strong>
+                                        <p class="mt-2 p-2 bg-light rounded">
+                                            <t t-esc="state.selectedTest.notes"/>
+                                        </p>
+                                    </div>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </main>
+                
+                <footer class="modal-footer">
+                    <button class="btn btn-secondary" t-on-click="close">
+                        Close
+                    </button>
+                </footer>
+            </div>
+        </div>
+    </t>
+    
+</templates>

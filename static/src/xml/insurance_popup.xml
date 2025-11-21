@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-name="bp_optical_pos.InsurancePopup" owl="1">
+        <div class="popup popup-full-screen optical-insurance-popup">
+            <!-- Header with proper typography -->
+            <header class="title drag-handle" style="padding: 20px 24px; border-bottom: 1px solid #e0e0e0;">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 600; color: #212529;">Insurance Details</h3>
+                <p style="margin: 4px 0 0 0; font-size: 14px; font-weight: 400; color: #6c757d;">Complete the form to add insurance information</p>
+            </header>
+            
+            <main class="body" style="padding: 24px; overflow-y: auto;">
+                <div class="insurance-form">
+                    <!-- Form Grid with consistent spacing -->
+                    <div class="row g-4">
+                        
+                        <!-- Insurance Company - Full Width -->
+                        <div class="col-12">
+                            <label class="form-label" for="insurance_company_id" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #212529;">
+                                <i class="fa fa-building" style="margin-right: 8px; color: #0d6efd;"></i>
+                                Insurance Company *
+                            </label>
+                            <select class="form-control" 
+                                    id="insurance_company_id"
+                                    t-model="state.insurance_company_id"
+                                    style="padding: 10px 12px; font-size: 14px; font-weight: 400;">
+                                <option value="">Select Insurance Company</option>
+                                <t t-foreach="props.insuranceCompanies" t-as="company" t-key="company.id">
+                                    <option t-att-value="company.id" t-esc="company.name"/>
+                                </t>
+                            </select>
+                        </div>
+                        
+                        <!-- Policy Number -->
+                        <div class="col-md-6">
+                            <label class="form-label" for="policy_number" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: #212529;">
+                                <i class="fa fa-id-card" style="margin-right: 8px; color: #0d6efd;"></i>
+                                Policy Number *
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="policy_number"
+                                   t-model="state.policy_number" 
+                                   placeholder="Enter policy number"
+                                   style="padding: 10px 12px; font-size: 14px; font-weight: 400;"/>
+                        </div>
+                        
+                        <!-- Expiry Date -->
+                        <div class="col-md-6">
+                            <label class="form-label" for="insurance_expiry_date" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #495057;">
+                                <i class="fa fa-calendar" style="margin-right: 8px; color: #6c757d;"></i>
+                                Expiry Date
+                            </label>
+                            <input type="date" 
+                                   class="form-control" 
+                                   id="insurance_expiry_date"
+                                   t-model="state.insurance_expiry_date"
+                                   style="padding: 10px 12px; font-size: 14px; font-weight: 400;"/>
+                        </div>
+                        
+                        <!-- Patient Company -->
+                        <div class="col-md-6">
+                            <label class="form-label" for="patient_company" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #495057;">
+                                <i class="fa fa-briefcase" style="margin-right: 8px; color: #6c757d;"></i>
+                                Patient Company
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="patient_company"
+                                   t-model="state.patient_company" 
+                                   placeholder="Company name"
+                                   style="padding: 10px 12px; font-size: 14px; font-weight: 400;"/>
+                        </div>
+                        
+                        <!-- Invoice Number -->
+                        <div class="col-md-6">
+                            <label class="form-label" for="insurance_invoice_number" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #495057;">
+                                <i class="fa fa-file-text" style="margin-right: 8px; color: #6c757d;"></i>
+                                Invoice Number
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="insurance_invoice_number"
+                                   t-model="state.insurance_invoice_number" 
+                                   placeholder="Invoice number"
+                                   style="padding: 10px 12px; font-size: 14px; font-weight: 400;"/>
+                        </div>
+                        
+                        <!-- Document Upload -->
+                        <div class="col-12">
+                            <label class="form-label" for="insurance_document" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #495057;">
+                                <i class="fa fa-upload" style="margin-right: 8px; color: #6c757d;"></i>
+                                Upload Document
+                            </label>
+                            <div class="d-flex align-items-center gap-3">
+                                <input type="file" 
+                                       class="form-control" 
+                                       id="insurance_document"
+                                       t-on-change="onFileChange"
+                                       accept="image/*,.pdf,.doc,.docx"
+                                       style="padding: 10px 12px; font-size: 14px; font-weight: 400;"/>
+                                <span t-if="state.fileName" 
+                                      class="badge bg-success"
+                                      style="padding: 8px 12px; font-size: 13px; font-weight: 500; white-space: nowrap;">
+                                    <i class="fa fa-check" style="margin-right: 6px;"></i>
+                                    File Selected
+                                </span>
+                            </div>
+                            <small class="form-text text-muted" style="display: block; margin-top: 6px; font-size: 13px; font-weight: 400; color: #6c757d;">
+                                Accepted formats: Images, PDF, Word documents (Max 5MB)
+                            </small>
+                        </div>
+                        
+                        <!-- Coverage Details -->
+                        <div class="col-12">
+                            <label class="form-label" for="coverage_details" style="display: block; margin-bottom: 8px; font-size: 14px; font-weight: 500; color: #495057;">
+                                <i class="fa fa-list" style="margin-right: 8px; color: #6c757d;"></i>
+                                Coverage Details
+                            </label>
+                            <textarea class="form-control" 
+                                      id="coverage_details"
+                                      t-model="state.coverage_details" 
+                                      placeholder="Enter coverage details, limitations, or notes..."
+                                      rows="4"
+                                      style="padding: 10px 12px; font-size: 14px; font-weight: 400; line-height: 1.5;"/>
+                        </div>
+                        
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Footer with proper spacing -->
+            <footer class="footer" style="padding: 16px 24px; border-top: 1px solid #e0e0e0; background-color: #f8f9fa;">
+                <div class="d-flex justify-content-end gap-3">
+                    <button class="btn btn-secondary" 
+                            t-on-click="cancel"
+                            style="padding: 10px 24px; font-size: 14px; font-weight: 500; min-width: 100px;">
+                        <i class="fa fa-times" style="margin-right: 8px;"></i>
+                        Cancel
+                    </button>
+                    <button class="btn btn-primary" 
+                            t-on-click="confirm"
+                            style="padding: 10px 24px; font-size: 14px; font-weight: 500; min-width: 120px;">
+                        <i class="fa fa-save" style="margin-right: 8px;"></i>
+                        Save Insurance
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </t>
+    
+</templates>

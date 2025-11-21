@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    
+    <t t-name="bp_optical_pos.StageChangePopup" owl="1">
+        <div class="popup popup-stage-change">
+            <!-- Header -->
+            <header class="title drag-handle" style="padding: 20px 24px; border-bottom: 1px solid #e0e0e0;">
+                <h3 style="margin: 0; font-size: 20px; font-weight: 600; color: #212529;">
+                    <i class="fa fa-exchange" style="margin-right: 8px; color: #0d6efd;"></i>
+                    Change Test Stage
+                </h3>
+                <p style="margin: 4px 0 0 0; font-size: 14px; font-weight: 400; color: #6c757d;">
+                    Move test to a different workflow stage
+                </p>
+            </header>
+            
+            <main class="body" style="padding: 24px; min-width: 400px;">
+                <!-- Current Stage Display -->
+                <div class="current-stage-info" style="margin-bottom: 24px; padding: 16px; background-color: #f8f9fa; border-radius: 8px; border-left: 4px solid #0d6efd;">
+                    <label style="display: block; margin-bottom: 4px; font-size: 13px; font-weight: 500; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Current Stage
+                    </label>
+                    <div style="font-size: 16px; font-weight: 600; color: #212529;">
+                        <i class="fa fa-map-marker" style="margin-right: 8px; color: #0d6efd;"></i>
+                        <span t-esc="currentStageName"/>
+                    </div>
+                </div>
+                
+                <!-- Stage Selection -->
+                <div class="stage-selection">
+                    <label class="form-label" for="stage_select" style="display: block; margin-bottom: 12px; font-size: 14px; font-weight: 600; color: #212529;">
+                        <i class="fa fa-arrow-right" style="margin-right: 8px; color: #0d6efd;"></i>
+                        Select New Stage *
+                    </label>
+                    
+                    <select class="form-control" 
+                            id="stage_select"
+                            t-model="state.selectedStageId"
+                            style="padding: 12px 16px; font-size: 14px; font-weight: 400; border-radius: 6px; border: 2px solid #dee2e6;">
+                        <option value="">-- Select Stage --</option>
+                        <t t-foreach="availableStages" t-as="stage" t-key="stage.id">
+                            <option t-att-value="stage.id" t-esc="stage.name"/>
+                        </t>
+                    </select>
+                    
+                    <small class="form-text text-muted" style="display: block; margin-top: 8px; font-size: 13px; font-weight: 400; color: #6c757d;">
+                        <i class="fa fa-info-circle" style="margin-right: 6px;"></i>
+                        Select the stage you want to move this test to
+                    </small>
+                </div>
+                
+                <!-- Stage Flow Visualization -->
+                <div class="stage-flow" style="margin-top: 24px; padding: 16px; background-color: #f8f9fa; border-radius: 8px;">
+                    <label style="display: block; margin-bottom: 12px; font-size: 13px; font-weight: 600; color: #495057; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Typical Workflow
+                    </label>
+                    <div class="d-flex align-items-center flex-wrap gap-2" style="font-size: 12px; color: #6c757d;">
+                        <span class="badge bg-secondary" style="padding: 6px 10px; font-weight: 500;">Draft</span>
+                        <i class="fa fa-arrow-right" style="color: #adb5bd;"></i>
+                        <span class="badge bg-info" style="padding: 6px 10px; font-weight: 500;">Test Room</span>
+                        <i class="fa fa-arrow-right" style="color: #adb5bd;"></i>
+                        <span class="badge bg-warning" style="padding: 6px 10px; font-weight: 500;">Fitting</span>
+                        <i class="fa fa-arrow-right" style="color: #adb5bd;"></i>
+                        <span class="badge bg-primary" style="padding: 6px 10px; font-weight: 500;">Ready</span>
+                        <i class="fa fa-arrow-right" style="color: #adb5bd;"></i>
+                        <span class="badge bg-success" style="padding: 6px 10px; font-weight: 500;">Completed</span>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Footer -->
+            <footer class="footer" style="padding: 16px 24px; border-top: 1px solid #e0e0e0; background-color: #f8f9fa;">
+                <div class="d-flex justify-content-end gap-3">
+                    <button class="btn btn-secondary" 
+                            t-on-click="cancel"
+                            style="padding: 10px 24px; font-size: 14px; font-weight: 500; min-width: 100px;">
+                        <i class="fa fa-times" style="margin-right: 8px;"></i>
+                        Cancel
+                    </button>
+                    <button class="btn btn-primary" 
+                            t-on-click="confirm"
+                            t-att-disabled="!state.selectedStageId"
+                            style="padding: 10px 24px; font-size: 14px; font-weight: 500; min-width: 120px;">
+                        <i class="fa fa-check" style="margin-right: 8px;"></i>
+                        Change Stage
+                    </button>
+                </div>
+            </footer>
+        </div>
+    </t>
+    
+</templates>

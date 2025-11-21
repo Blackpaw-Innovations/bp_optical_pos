@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extend POS Payment Method Form to Add Insurance Payment Method -->
+    <record id="view_pos_payment_method_form_insurance" model="ir.ui.view">
+        <field name="name">pos.payment.method.form.insurance</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Add Insurance Payment Method checkbox after journal_id -->
+            <xpath expr="//field[@name='journal_id']" position="after">
+                <field name="is_insurance_method" string="Insurance Payment Method"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="bp_optical_pos.OpticalInsurancePopup">
+        <div class="popup popup-optical-insurance">
+            <header class="modal-header">
+                <h4 class="modal-title"><t t-esc="props.title"/></h4>
+            </header>
+            <main class="modal-body">
+                <div class="form-group mb-3">
+                    <label class="form-label">Insurance Company *</label>
+                    <select class="form-control form-select" t-model="state.insurance_company_id">
+                        <option value="">-- Select Insurance Company --</option>
+                        <t t-foreach="insuranceCompanies" t-as="company" t-key="company.id">
+                            <option t-att-value="company.id">
+                                <t t-esc="company.name"/>
+                            </option>
+                        </t>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Policy Number</label>
+                    <input type="text" 
+                           class="form-control" 
+                           t-model="state.policy_number"
+                           placeholder="Enter policy number"/>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Member Number</label>
+                    <input type="text" 
+                           class="form-control" 
+                           t-model="state.member_number"
+                           placeholder="Enter member number"/>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Employer / Corporate</label>
+                    <input type="text" 
+                           class="form-control" 
+                           t-model="state.employer"
+                           placeholder="Enter employer or corporate name"/>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Notes</label>
+                    <textarea class="form-control" 
+                              t-model="state.notes"
+                              rows="3"
+                              placeholder="Additional notes..."/>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="form-label">Amount</label>
+                    <input type="number" 
+                           class="form-control" 
+                           t-model="state.amount"
+                           readonly="readonly"
+                           step="0.01"/>
+                </div>
+            </main>
+            <footer class="modal-footer">
+                <button class="btn btn-secondary" t-on-click="() => props.close()">
+                    <t t-esc="props.cancelText"/>
+                </button>
+                <button class="btn btn-primary" t-on-click="confirm">
+                    <t t-esc="props.confirmText"/>
+                </button>
+            </footer>
+        </div>
+    </t>
+</templates>

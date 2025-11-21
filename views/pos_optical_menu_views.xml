@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Root Menu for Optical POS -->
+        <menuitem id="menu_bp_optical_pos_root"
+                  name="Optical POS"
+                  parent="point_of_sale.menu_point_root"
+                  groups="bp_optical_pos.group_optical_pos_manager"
+                  sequence="100"/>
+
+        <!-- Optical POS Configurations Action -->
+        <record id="action_bp_optical_pos_configs" model="ir.actions.act_window">
+            <field name="name">Optical POS Configurations</field>
+            <field name="res_model">pos.config</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_optical_enabled': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Configure your Optical Point of Sale
+                </p>
+                <p>
+                    Enable optical features on POS configurations to activate optical tests,
+                    insurance payments, and branch-specific analytics.
+                </p>
+            </field>
+        </record>
+
+        <!-- Configuration Submenu -->
+        <menuitem id="menu_bp_optical_pos_configuration"
+                  name="Configuration"
+                  parent="menu_bp_optical_pos_root"
+                  action="action_bp_optical_pos_configs"
+                  sequence="10"/>
+
+        <!-- Reporting Submenu -->
+        <menuitem id="menu_bp_optical_pos_reporting"
+                  name="Reporting"
+                  parent="menu_bp_optical_pos_root"
+                  sequence="20"/>
+    </data>
+</odoo>

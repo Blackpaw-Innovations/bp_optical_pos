@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="res_config_settings_view_form_optical_pos" model="ir.ui.view">
+            <field name="name">res.config.settings.view.form.inherit.optical.pos</field>
+            <field name="model">res.config.settings</field>
+            <field name="inherit_id" ref="bp_optical_core.view_optical_config_settings"/>
+            <field name="arch" type="xml">
+                <xpath expr="//app[@name='bp_optical_core']" position="inside">
+                    <block title="Branch Access Management">
+                        <setting>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="text-muted">
+                                        Assign users to branches to control access to patients and tests.
+                                        Users will only see data for branches they are assigned to.
+                                    </div>
+                                    <div class="mt16">
+                                        <button name="action_manage_branch_users" 
+                                                string="Manage Branch Users" 
+                                                type="object" 
+                                                class="btn btn-primary" 
+                                                icon="fa-users"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </setting>
+                    </block>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

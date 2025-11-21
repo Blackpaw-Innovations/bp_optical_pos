@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_optical_branch_pl_wizard_form" model="ir.ui.view">
+        <field name="name">optical.branch.pl.wizard.form</field>
+        <field name="model">optical.branch.pl.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Branch Profit &amp; Loss">
+                <group>
+                    <group>
+                        <field name="date_from"/>
+                        <field name="date_to"/>
+                    </group>
+                    <group>
+                        <field name="target_move" widget="radio"/>
+                    </group>
+                </group>
+                <group>
+                    <field name="branch_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                </group>
+                <footer>
+                    <button name="action_print_report" string="Print" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_optical_branch_pl_wizard" model="ir.actions.act_window">
+        <field name="name">Branch Profit &amp; Loss</field>
+        <field name="res_model">optical.branch.pl.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <menuitem id="menu_optical_branch_pl_report"
+              name="Branch Profit &amp; Loss"
+              parent="bp_optical_pos.menu_bp_optical_pos_reporting"
+              action="action_optical_branch_pl_wizard"
+              sequence="100"/>
+</odoo>

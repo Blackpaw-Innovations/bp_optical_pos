@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_optical_insurance_payment_user,optical.insurance.payment.user,model_optical_insurance_payment,group_optical_pos_user,1,1,1,0
+access_optical_insurance_payment_manager,optical.insurance.payment.manager,model_optical_insurance_payment,group_optical_pos_manager,1,1,1,1
+access_optical_branch_pl_wizard_user,optical.branch.pl.wizard.user,model_optical_branch_pl_wizard,group_optical_pos_user,1,1,1,1
+access_optical_branch_pl_wizard_manager,optical.branch.pl.wizard.manager,model_optical_branch_pl_wizard,group_optical_pos_manager,1,1,1,1

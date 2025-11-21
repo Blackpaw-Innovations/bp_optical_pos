@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="bp_optical_pos.OpticalTestPopup">
+        <div class="popup optical-test-popup" style="max-width: 1000px;">
+            <header class="modal-header" style="border-bottom: 1px solid #e0e0e0; padding: 20px 32px; background: #fff;">
+                <h4 class="modal-title" style="font-size: 22px; font-weight: 600; color: #1a1a1a; margin: 0;">Optical Prescription</h4>
+            </header>
+            
+            <main class="modal-body" style="max-height: 75vh; overflow-y: auto; padding: 32px; background: #fafafa;">
+                <!-- Patient Info Section -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Patient Name</label>
+                        <div style="padding: 12px 16px; background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a;">
+                            <t t-esc="props.customer?.name || ''"/>
+                        </div>
+                    </div>
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Patient ID</label>
+                        <div style="padding: 12px 16px; background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; font-size: 14px; color: #1a1a1a;">
+                            <t t-esc="props.customer?.id || ''"/>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vision Prescription Section -->
+                <div style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 24px; margin-bottom: 28px;">
+                    <h5 style="margin: 0 0 20px 0; font-size: 16px; font-weight: 600; color: #1a1a1a;">Vision Prescription</h5>
+                    
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #dfe1e6;">
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">EYE</th>
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">SPHERE</th>
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">CYLINDER</th>
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">AXIS</th>
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">ADD</th>
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">PRISM</th>
+                                    <th style="padding: 12px 8px; text-align: left; font-size: 11px; color: #5e6c84; font-weight: 700; text-transform: uppercase;">BASE</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Right Eye (OD) -->
+                                <tr style="border-bottom: 1px solid #f4f5f7;">
+                                    <td style="padding: 12px 8px; font-size: 13px; font-weight: 600; color: #1a1a1a;">Right (OD)</td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.sphere_od" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.cylinder_od" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.axis_od" min="0" max="180" placeholder="0" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.add_od" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.prism_od" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="text" class="form-control" t-model="state.va_od" placeholder="" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                </tr>
+                                <!-- Left Eye (OS) -->
+                                <tr>
+                                    <td style="padding: 12px 8px; font-size: 13px; font-weight: 600; color: #1a1a1a;">Left (OS)</td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.sphere_os" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.cylinder_os" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.axis_os" min="0" max="180" placeholder="0" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.add_os" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="number" class="form-control" t-model="state.prism_os" step="0.25" placeholder="0.00" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                    <td style="padding: 12px 8px;">
+                                        <input type="text" class="form-control" t-model="state.va_os" placeholder="" 
+                                               style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 8px 12px; font-size: 14px; width: 100%;"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Additional Measurements Section -->
+                <div style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 24px; margin-bottom: 28px;">
+                    <h5 style="margin: 0 0 20px 0; font-size: 16px; font-weight: 600; color: #1a1a1a;">Additional Measurements</h5>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 12px; font-size: 13px; color: #5e6c84; font-weight: 600;">PD (mm)</label>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #5e6c84;">OD</label>
+                                <input type="number" class="form-control" t-model="state.pd_od" step="0.5" placeholder="" 
+                                       style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #5e6c84;">OS</label>
+                                <input type="number" class="form-control" t-model="state.pd_os" step="0.5" placeholder="" 
+                                       style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #5e6c84;">Total</label>
+                                <input type="number" class="form-control" step="0.5" placeholder="" readonly="readonly"
+                                       style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%; background: #f4f5f7;"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label style="display: block; margin-bottom: 12px; font-size: 13px; color: #5e6c84; font-weight: 600;">Height (mm)</label>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #5e6c84;">OD</label>
+                                <input type="number" class="form-control" t-model="state.height_od" step="0.5" placeholder="" 
+                                       style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 6px; font-size: 12px; color: #5e6c84;">OS</label>
+                                <input type="number" class="form-control" t-model="state.height_os" step="0.5" placeholder="" 
+                                       style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lens & Frame Options -->
+                <div t-if="state.needs_new_lens || state.needs_new_frame" style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 24px; margin-bottom: 28px;">
+                    <h5 style="margin: 0 0 20px 0; font-size: 16px; font-weight: 600; color: #1a1a1a;">Lens &amp; Frame Options</h5>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input class="form-check-input" type="checkbox" t-model="state.needs_new_lens" style="margin-right: 10px; width: 18px; height: 18px;"/>
+                            <span style="font-size: 14px; color: #1a1a1a;">Needs New Lens</span>
+                        </label>
+                        <label style="display: flex; align-items: center; cursor: pointer;">
+                            <input class="form-check-input" type="checkbox" t-model="state.needs_new_frame" style="margin-right: 10px; width: 18px; height: 18px;"/>
+                            <span style="font-size: 14px; color: #1a1a1a;">Needs New Frame</span>
+                        </label>
+                    </div>
+                    
+                    <div t-if="state.needs_new_lens" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Lens Type</label>
+                            <select class="form-select" t-model="state.lens_type_id" style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;">
+                                <option value=""></option>
+                                <t t-foreach="lensTypes" t-as="type" t-key="type.id">
+                                    <option t-att-value="type.id" t-esc="type.name"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Coating</label>
+                            <select class="form-select" t-model="state.coating_id" style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;">
+                                <option value=""></option>
+                                <t t-foreach="coatings" t-as="coating" t-key="coating.id">
+                                    <option t-att-value="coating.id" t-esc="coating.name"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Index</label>
+                            <select class="form-select" t-model="state.index_id" style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;">
+                                <option value=""></option>
+                                <t t-foreach="indexes" t-as="index" t-key="index.id">
+                                    <option t-att-value="index.id" t-esc="index.name"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Material</label>
+                            <select class="form-select" t-model="state.material_id" style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;">
+                                <option value=""></option>
+                                <t t-foreach="materials" t-as="material" t-key="material.id">
+                                    <option t-att-value="material.id" t-esc="material.name"/>
+                                </t>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div t-if="state.needs_new_frame">
+                        <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Frame</label>
+                        <select class="form-select" t-model="state.frame_id" style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;">
+                            <option value=""></option>
+                            <t t-foreach="frames" t-as="frame" t-key="frame.id">
+                                <option t-att-value="frame.id" t-esc="frame.name"/>
+                            </t>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Additional Details -->
+                <div style="background: #fff; border: 1px solid #dfe1e6; border-radius: 4px; padding: 24px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Insurance Company</label>
+                            <select class="form-select" t-model="state.insurance_company_id" style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;">
+                                <option value=""></option>
+                                <t t-foreach="insuranceCompanies" t-as="company" t-key="company.id">
+                                    <option t-att-value="company.id" t-esc="company.name"/>
+                                </t>
+                            </select>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Workshop Order #</label>
+                            <input type="text" class="form-control" t-model="state.workshop_order_number" 
+                                   style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                        </div>
+                        <div>
+                            <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Valid Until</label>
+                            <input type="date" class="form-control" t-model="state.valid_until" 
+                                   style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                        </div>
+                        <div>
+                            <label style="display: flex; align-items: center; margin-bottom: 8px; cursor: pointer;">
+                                <input class="form-check-input" type="checkbox" t-model="state.follow_up_required" style="margin-right: 8px; width: 18px; height: 18px;"/>
+                                <span style="font-size: 13px; color: #5e6c84; font-weight: 600;">Follow-up Required</span>
+                            </label>
+                            <input t-if="state.follow_up_required" type="date" class="form-control" t-model="state.follow_up_date" 
+                                   style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%;"/>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; font-size: 13px; color: #5e6c84; font-weight: 600;">Clinical Notes</label>
+                        <textarea class="form-control" t-model="state.notes" rows="3" 
+                                  style="border: 1px solid #dfe1e6; border-radius: 3px; padding: 10px 12px; font-size: 14px; width: 100%; resize: vertical;"/>
+                    </div>
+                </div>
+            </main>
+            
+            <footer class="modal-footer" style="display: flex; justify-content: flex-end; gap: 12px; padding: 16px 32px; background: #fafafa; border-top: 1px solid #e0e0e0;">
+                <button class="btn btn-light" t-on-click="cancel" style="padding: 10px 20px; font-size: 14px; font-weight: 500; border: 1px solid #dfe1e6; border-radius: 3px; background: #fff; color: #42526e;">
+                    Cancel
+                </button>
+                <button class="btn btn-primary" t-on-click="confirm" style="padding: 10px 20px; font-size: 14px; font-weight: 500; border: none; border-radius: 3px; background: #0052cc; color: #fff;">
+                    Save
+                </button>
+            </footer>
+        </div>
+    </t>
+</templates>

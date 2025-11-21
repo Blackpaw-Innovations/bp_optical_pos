@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Insurance Journal -->
+        <record id="insurance_journal" model="account.journal">
+            <field name="name">Insurance Invoices</field>
+            <field name="code">INS</field>
+            <field name="type">sale</field>
+            <field name="company_id" ref="base.main_company"/>
+        </record>
+    </data>
+</odoo>

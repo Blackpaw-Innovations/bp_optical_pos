@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Extend POS Config Form to Add Optical Settings -->
+        <record id="view_pos_config_form_optical_pos" model="ir.ui.view">
+            <field name="name">pos.config.form.optical.pos</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.pos_config_view_form"/>
+            <field name="arch" type="xml">
+                <!-- Add Optical settings before the last div in settings container -->
+                <xpath expr="//div[hasclass('o_settings_container')]/div[last()]" position="before">
+                    <setting string="Enable Optical Features" 
+                             help="Activate optical-specific features such as optical tests, insurance split, and branch analytics.">
+                        <field name="optical_enabled"/>
+                        <div class="content-group mt16" invisible="not optical_enabled">
+                            <div class="row">
+                                <label string="Optical Branch" for="optical_branch_id" class="col-lg-4 o_light_label"/>
+                                <field name="optical_branch_id" options="{'no_create': True}"/>
+                            </div>
+                            <div class="row mt8">
+                                <label string="Always Create Invoice" for="optical_force_invoice" class="col-lg-4 o_light_label"/>
+                                <field name="optical_force_invoice"/>
+                            </div>
+                            <div class="row mt8">
+                                <label string="Require Customer" for="optical_require_customer" class="col-lg-4 o_light_label"/>
+                                <field name="optical_require_customer"/>
+                            </div>
+                            <div class="row mt8">
+                                <label string="Insurance Journal" for="optical_insurance_journal_id" class="col-lg-4 o_light_label"/>
+                                <field name="optical_insurance_journal_id" options="{'no_create': True}"/>
+                            </div>
+                        </div>
+                    </setting>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- Extend POS Config Search View to Add Optical Filter -->
+        <record id="view_pos_config_search_optical_pos" model="ir.ui.view">
+            <field name="name">pos.config.search.optical.pos</field>
+            <field name="model">pos.config</field>
+            <field name="inherit_id" ref="point_of_sale.view_pos_config_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search" position="inside">
+                    <filter string="Optical Enabled" 
+                            name="optical_enabled" 
+                            domain="[('optical_enabled', '=', True)]"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

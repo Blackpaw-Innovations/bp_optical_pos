@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="action_report_pending_insurance" model="ir.actions.report">
+        <field name="name">Pending Insurance Report</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">bp_optical_pos.report_pending_insurance</field>
+        <field name="report_file">bp_optical_pos.report_pending_insurance</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="report_pending_insurance">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <div class="col-12">
+                            <h2>Pending Insurance Invoices</h2>
+                        </div>
+                    </div>
+
+                    <table class="table table-sm o_main_table mt-4">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Number</th>
+                                <th>Patient</th>
+                                <th>Insurance Company</th>
+                                <th>Branch</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-end">Amount Due</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-set="total_due" t-value="0"/>
+                            <t t-foreach="docs" t-as="o">
+                                <t t-set="total_due" t-value="total_due + o.amount_residual"/>
+                                <tr>
+                                    <td><span t-field="o.invoice_date"/></td>
+                                    <td><span t-field="o.name"/></td>
+                                    <td><span t-field="o.associated_patient_name"/></td>
+                                    <td><span t-field="o.insurance_company_id"/></td>
+                                    <td><span t-field="o.branch_id"/></td>
+                                    <td class="text-end"><span t-field="o.amount_total"/></td>
+                                    <td class="text-end"><span t-field="o.amount_residual"/></td>
+                                </tr>
+                            </t>
+                            <tr class="fw-bold">
+                                <td colspan="6" class="text-end">Total Due:</td>
+                                <td class="text-end">
+                                    <span t-esc="total_due" t-options='{"widget": "monetary", "display_currency": docs[0].currency_id}'/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
